@@ -12,7 +12,6 @@ Configuration PowerBITest
             Name        = "PowerBI Desktop"
             ProductId   = "3fc9c5b9-adc8-4075-8e03-c156729596b8"
             Arguments   = "-s -norestart ACCEPT_EULA=1"
-            DependsOn   = '[Package]PowerBIDesktop'
         }
         Package AzureDataStudio
         {

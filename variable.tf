@@ -5,7 +5,7 @@ variable "region" {
 
 variable "resourcegroupname" {
   type = string
-  default = "<Resource Name>"
+  default = "<ResourceGroup>"
 }
 
 variable "networkaddress" {
@@ -134,11 +134,11 @@ variable "key_vault_ipaddress"{
 
 variable "install4chocolatey" {
   type    = list(string)
-  default = ["{\"commandToExecute\": \"powershell.exe -Command \\\"Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')); if($?) { powershell.exe -Command \\\"choco install vscode microsoftazurestorageexplorer -dvfy\\\" } powershell.exe -Command \\\"Rename-Item %SYSTEMDRIVE%\\\\AzureData\\\\CustomData.bin %SYSTEMDRIVE%\\\\AzureData\\\\powerbiinstall.ps1\\\"; powershell.exe -sta -ExecutionPolicy Unrestricted -file %SYSTEMDRIVE%\\\\AzureData\\\\powerbiinstall.ps1;\\\"\"}"]
+  default = ["{\"commandToExecute\": \"powershell.exe -Command \\\"Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')); if($?) { powershell.exe -Command \\\"choco install vscode microsoftazurestorageexplorer -fy\\\" } powershell.exe -Command \\\"Rename-Item %SYSTEMDRIVE%\\\\AzureData\\\\CustomData.bin %SYSTEMDRIVE%\\\\AzureData\\\\powerbiinstall.ps1\\\"; powershell.exe -sta -ExecutionPolicy Unrestricted -file %SYSTEMDRIVE%\\\\AzureData\\\\powerbiinstall.ps1;\\\"\"}"]
 }
 
 variable "package4chocolatey" {
   type    = list(string)
-  default = ["{\"commandToExecute\": \"powershell.exe \\\"choco install vscode powerbi microsoftazurestorageexplorer azure-data-studio\\\"\"}"]
+  default = ["{\"commandToExecute\": \"powershell.exe -Command \\\"Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')); if($?) { powershell.exe -Command \\\"choco install vscode microsoftazurestorageexplorer powerbi azure-data-studio -dvfy\\\" }\"}"]
 }
 

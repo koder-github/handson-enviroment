@@ -222,8 +222,8 @@ output "azurevm"{
 }
 
 resource "azurerm_virtual_machine_extension" "chocolatey" {
-  count                = length(var.install4chocolatey)
-  name                 = "chocolateyinstall"
+  count                = length(var.package4chocolatey)
+  name                 = "install4chocolatey"
  
   virtual_machine_id   = azurerm_virtual_machine.main.id
   publisher            = "Microsoft.Compute"
@@ -240,14 +240,14 @@ resource "azurerm_virtual_machine_extension" "chocolatey" {
 resource "azurerm_subnet_network_security_group_association" "bastion" {
     subnet_id                 = azurerm_subnet.bastion.id
     network_security_group_id = azurerm_network_security_group.bastion.id
-    depends_on = [azurerm_virtual_machine_extension.chocolatey]
+    #depends_on = [azurerm_virtual_machine_extension.chocolatey]
 }
 
 # Connect the security group to the network interface
 resource "azurerm_subnet_network_security_group_association" "example" {
     subnet_id                 = azurerm_subnet.internal.id
     network_security_group_id = azurerm_network_security_group.internal.id
-    depends_on = [azurerm_virtual_machine_extension.chocolatey]
+    #depends_on = [azurerm_virtual_machine_extension.chocolatey]
 }
 
 resource "azurerm_bastion_host" "example" {

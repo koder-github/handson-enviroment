@@ -10,7 +10,7 @@ Configuration PowerBI
             Ensure      = "Present"  # You can also set Ensure to "Absent"
             Path        = "https://miscstrage.blob.core.windows.net/box/pbi/PBIDesktopSetup_x64.exe?sv=2019-12-12&st=2021-01-06T00%3A00%3A00Z&se=2021-06-30T14%3A59%3A00Z&sr=b&sp=r&sig=RiUzgukukIjPj2w9gbIRPVJXk6I5SW2ZL9FcmmAYH1Q%3D"
             Name        = "PowerBI Desktop"
-            ProductId   = "3fc9c5b9-adc8-4075-8e03-c156729596b8"
+            ProductId   = "a9c655eb-51f1-46d2-8f8c-ecf0ba091c34"
             Arguments   = "-s -norestart ACCEPT_EULA=1"
         }
     }

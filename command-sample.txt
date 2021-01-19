@@ -1,38 +1,12 @@
-以下、AzureStudy で使うコマンドです。
-
-[<prefix>を決める>]
-<自分の名前を小文字アルファベットを入力>
-
-[コマンドプロンプトを立ち上げる]
-cd Downloads
-mkdir terraformsyna
-cd terraformsyna
-
-[自身のオブジェクトIDを取得]
-<object_id>
+以下、AzureStudy 使うコマンド一覧です。
 
 [Terraformで環境構築 (Terraform ファイルをダウンロード)]
-curl -k -o bastion-net.tf "https://miscstrage.blob.core.windows.net/hands-on/bastion-net.tf?sv=2019-12-12&st=2020-12-13T15%3A00%3A00Z&se=2021-06-30T14%3A59%3A00Z&sr=b&sp=r&sig=ZL8eQieuEAUjP1Fct8et21tGqTsHdLXw41UorUXoUQk%3D"
+mkdir -p git
+cd git
+git clone https://github.com/tsukashusan/handson-enviroment.git
 
-curl -k -o synapse-db.tf "https://miscstrage.blob.core.windows.net/hands-on/synapse-db.tf?sv=2019-12-12&st=2020-12-13T15%3A00%3A00Z&se=2021-06-30T14%3A59%3A00Z&sr=b&sp=r&sig=MnyacJwY9M5SjDqg3cFd9goGdNIHb0FUnd7uXdt5sik%3D"
-
-curl -k -o variable.tf "https://miscstrage.blob.core.windows.net/hands-on/variable.tf?sv=2019-12-12&st=2020-12-13T15%3A00%3A00Z&se=2021-06-30T14%3A59%3A00Z&sr=b&sp=r&sig=KdrusK21Fsr9IVuMG088%2Fo3PrUTxWwS4lzAjqPDTir0%3D"
-
-curl -k -o resource-group.tf "https://miscstrage.blob.core.windows.net/hands-on/resource-group.tf?sv=2019-12-12&st=2020-12-13T15%3A00%3A00Z&se=2021-06-30T14%3A59%3A00Z&sr=b&sp=r&sig=fc8kM65O2ZDhDLLugvB3A4ysSkxXEdrhHTAtB6tqf1w%3D"
-
-curl -k -o keyvault.tf "https://miscstrage.blob.core.windows.net/hands-on/keyvault.tf?sv=2019-12-12&st=2020-12-13T15%3A00%3A00Z&se=2021-06-30T14%3A59%3A00Z&sr=b&sp=r&sig=K9osnJn6ik0bVVePGUcmr8YqIpQzDyUYNO2seFJ7fUE%3D"
-
-[アップロードしたファイルの移動]
-mkdir -p terraform/synapse-dbricks
-cd terraform/synapse-dbricks
-cp ~/*.tf .
-ls
-
-[variable.tf の修正 (2)]
-https://www.cman.jp/network/support/go_access.cgi
-
-[variable.tf の修正 (3)]
-https://www.graviness.com/app/pwg/
+[エディタの起動 (code .) ]
+code .
 
 [Terraform 初期化]
 terraform init
@@ -45,26 +19,6 @@ terraform plan -out vm-synapsecreate.tfplan
 
 [Terraform apply]
 terraform apply "vm-synapsecreate.tfplan"
-
-[Storage Access Key を Key Vault へ格納]
-名前: keyvaultsecret
-
-
-[Databricks CLI の準備]
-virtualenv -p /usr/bin/python databrickscli
-source databrickscli/bin/activate
-pip install databricks-cli
-databricks configure --token
-
-インタラクティブになった場合以下の値を張り付け
-https://japaneast.azuredatabricks.net/
-
-Databricks　Access Token
-<databricks token>
-
-[Databricksのシークレットスコープを作成 (1)]
-https://adb-7545185073451127.7.azuredatabricks.net#secrets/createScope
-
 
 [サンプルファイルのダウンロード]
 cd Downloads
@@ -79,10 +33,3 @@ SQL ファイルのダウンロード
 curl -k -o sample.sql "https://miscstrage.blob.core.windows.net/box/sample.sql?sv=2019-12-12&st=2020-11-24T15%3A00%3A00Z&se=2021-06-30T14%3A59%3A00Z&sr=b&sp=r&sig=32KVquGqV8j67xdBj8ts7slpF5LmJAGKvjpHMT6l0%2BA%3D"
 
 curl -k -o ctas.sql "https://miscstrage.blob.core.windows.net/box/ctas.sql?sv=2019-12-12&st=2020-11-24T15%3A00%3A00Z&se=2021-06-30T14%3A59%3A00Z&sr=b&sp=r&sig=vbHQDLxFZNCQf%2BIOcgT6XFg5ROP1n6xa76xEAZiStjc%3D"
-
-[Databricksのシークレットスコープを作成]
-databricks secrets create-scope --scope "scopesample" --scope-backend-type AZURE_KEYVAULT --resource-id "<リソースID>" --dns-name "<コンテナーのURL>"
-
-①<storage account name> 
-
-

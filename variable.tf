@@ -77,17 +77,23 @@ variable "imageversion" {
   default = "latest"
 }
 
-variable "sqlservername" {
+variable "synapseworkspacename" {
   type    = string
-  default = "<prefix>sqlserver"
+  default = "<prefix>synapsews"
 }
 
-variable "sqluser" {
+#name can contain only letters, numbers or underscore, The value must be between 1 and 15 characters long
+variable "synapspoolname" {
+  type    = string
+  default = "hanbankanri"
+}
+
+variable "synapseuser" {
   type    = string
   default = "adminuser"
 }
 
-variable "sqlpassword" {
+variable "synapsepassword" {
   type    = string
   default = "<password>"
 }
@@ -96,6 +102,7 @@ variable "storageaccountname" {
   type    = string
   default = "<prefix>synapse"
 }
+
 
 variable "storagecontainer" {
   type    = string
@@ -112,6 +119,18 @@ variable "databricksname" {
   default = "<prefix>databricks"
 }
 
+
+variable "datalake2accountname" {
+  type    = string
+  default = "<prefix>dl2"
+}
+
+variable "datalakege2name" {
+  type    = string
+  default = "dl2"
+}
+
+
 variable "key_vaultname" {
   type    = string
   default = "<prefix>keyvault"
@@ -122,9 +141,19 @@ variable "key_vault_retention" {
   default = "7"
 }
 
+variable "client_userid" {
+  type    = string
+  default = "<client_user_id>"
+}
+
 variable "client_objectid" {
   type    = string
   default = "<object_id>"
+}
+
+variable "client_tenantid" {
+  type    = string
+  default = "<client_tenantid>"
 }
 
 variable "key_vault_ipaddress"{
@@ -137,8 +166,7 @@ variable "install4chocolatey" {
   default = ["{\"commandToExecute\": \"powershell.exe -Command \\\"Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')); if($?) { powershell.exe -Command \\\"choco install vscode microsoftazurestorageexplorer -fy\\\" } powershell.exe -Command \\\"Rename-Item %SYSTEMDRIVE%\\\\AzureData\\\\CustomData.bin %SYSTEMDRIVE%\\\\AzureData\\\\powerbiinstall.ps1\\\"; powershell.exe -sta -ExecutionPolicy Unrestricted -file %SYSTEMDRIVE%\\\\AzureData\\\\powerbiinstall.ps1;\\\"\"}"]
 }
 
-variable "package4chocolatey" {
-  type    = list(string)
-  default = ["{\"commandToExecute\": \"powershell.exe -Command \\\"Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')); if($?) { powershell.exe -Command \\\"choco install vscode microsoftazurestorageexplorer powerbi azure-data-studio -dvfy\\\" }\"}"]
+variable "bastion_name" {
+  type    = string
+  default = "<prefix>bastion"
 }
-

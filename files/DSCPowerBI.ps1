@@ -1,16 +1,14 @@
 Configuration PowerBI
 {
     param ()
-    Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
-    Install-Module 'PSDscResources' -Verbose -Force -AllowClobber
     Node localhost
     {
         Package PowerBIDesktop
         {
             Ensure      = "Present"  # You can also set Ensure to "Absent"
-            Path        = "https://miscstrage.blob.core.windows.net/box/pbi/PBIDesktopSetup_x64.exe?sv=2019-12-12&st=2021-01-06T00%3A00%3A00Z&se=2021-06-30T14%3A59%3A00Z&sr=b&sp=r&sig=RiUzgukukIjPj2w9gbIRPVJXk6I5SW2ZL9FcmmAYH1Q%3D"
+            Path        = "https://miscstrage.blob.core.windows.net/box/pbi/PBIDesktopSetup_x64.exe?sv=2020-04-08&st=2021-03-22T04%3A11%3A04Z&se=2021-06-30T14%3A59%3A00Z&sr=b&sp=r&sig=Tio9OfbJNvboMoThh6WACkTHED7%2FrExuowC4hEn9gSg%3D"
             Name        = "PowerBI Desktop"
-            ProductId   = "a9c655eb-51f1-46d2-8f8c-ecf0ba091c34"
+            ProductId   = "8eaa61ad-7258-469f-8243-b88fa415e9f5"
             Arguments   = "-s -norestart ACCEPT_EULA=1"
         }
     }
@@ -24,14 +22,16 @@ Configuration AzureDataStudio
         Package AzureDataStudio
         {
             Ensure      = "Present"  # You can also set Ensure to "Absent"
-            Path        = "https://miscstrage.blob.core.windows.net/box/datastudio/azuredatastudio-windows-setup-1.25.1.exe?sv=2019-12-12&st=2021-01-06T04%3A00%3A00Z&se=2021-06-30T14%3A59%3A00Z&sr=b&sp=r&sig=A6GSoVogA8nCVSvh%2BBssSBjCCw2602HoY%2BX7qDZP3iU%3D"
+            Path        = "https://miscstrage.blob.core.windows.net/box/datastudio/azuredatastudio-windows-setup-1.26.1.exe?sv=2020-04-08&st=2021-03-22T04%3A11%3A37Z&se=2021-06-30T14%3A59%3A00Z&sr=b&sp=r&sig=U4xaOMtcdjIm1030zvosnJ4r0Lgj%2FyTVm0nf8yh2%2B3Y%3D"
             Name        = "Azure Data Studio"
             ProductId   = ""
             Arguments   = "/VERYSILENT /NORESTART /MERGETASKS=!runcode /LOG=`"$env:WINDIR\\Temp\\AzureDataStudio-Install.log`""
         }
     }
 }
-
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.208 -Force
+Install-Module -Name PSDscResources -Verbose -Force -AllowClobber
 $outputpathPBI = "$env:SYSTEMDRIVE\powerbipackage";
 $outputpathDataStudio = "$env:SYSTEMDRIVE\azuredatastudiopackage";
 New-Item "$outputpathPBI" -ItemType Directory;

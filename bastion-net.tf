@@ -222,7 +222,7 @@ output "azurevm"{
 }
 
 resource "azurerm_virtual_machine_extension" "chocolatey" {
-  count                = length(var.package4chocolatey)
+  count                = length(var.install4chocolatey)
   name                 = "install4chocolatey"
  
   virtual_machine_id   = azurerm_virtual_machine.main.id
@@ -240,7 +240,7 @@ resource "azurerm_virtual_machine_extension" "chocolatey" {
 resource "azurerm_subnet_network_security_group_association" "bastion" {
     subnet_id                 = azurerm_subnet.bastion.id
     network_security_group_id = azurerm_network_security_group.bastion.id
-    #depends_on = [azurerm_virtual_machine_extension.chocolatey]
+    # depends_on = [azurerm_bastion_host.example]
 }
 
 # Connect the security group to the network interface
@@ -250,18 +250,33 @@ resource "azurerm_subnet_network_security_group_association" "example" {
     #depends_on = [azurerm_virtual_machine_extension.chocolatey]
 }
 
-resource "azurerm_bastion_host" "example" {
-  name                = "examplebastion"
-  location            = azurerm_resource_group.example.location
-  resource_group_name = azurerm_resource_group.example.name
-
-  ip_configuration {
-    name                 = "configuration"
-    subnet_id            = azurerm_subnet.bastion.id
-    public_ip_address_id = azurerm_public_ip.bastion.id
+resource "null_resource" "create_bastion" {
+  provisioner "local-exec" {
+    command = "az network bastion create --name $env:BASTION_NAME --public-ip-address $env:PUBLIC_IP_ADDRESS --resource-group $env:RESOURCE_GROUP_NAME --vnet-name $env:VNET_NAME"
+    interpreter = ["powershell", "-Command"]
+    environment = {
+      BASTION_NAME         = var.bastion_name
+      RESOURCE_GROUP_NAME  = azurerm_resource_group.example.name
+      VNET_NAME            = azurerm_virtual_network.example.name
+      PUBLIC_IP_ADDRESS    = azurerm_public_ip.bastion.id
+    }
   }
-  depends_on = [azurerm_subnet_network_security_group_association.bastion]
-  tags = {
-      environment = "Bastion & Terraform Demo"
-  }
+  depends_on = [azurerm_public_ip.bastion]
 }
+
+
+#resource "azurerm_bastion_host" "example" {
+#  name                = "examplebastion"
+#  location            = azurerm_resource_group.example.location
+#  resource_group_name = azurerm_resource_group.example.name
+#
+#  ip_configuration {
+#    name                 = "configuration"
+#    subnet_id            = azurerm_subnet.bastion.id
+#    public_ip_address_id = azurerm_public_ip.bastion.id
+#  }
+#  #depends_on = [azurerm_subnet_network_security_group_association.bastion]
+#  tags = {
+#      environment = "Bastion & Terraform Demo"
+#  }
+#}

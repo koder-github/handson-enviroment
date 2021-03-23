@@ -3,7 +3,7 @@
 [Terraformで環境構築 (Terraform ファイルをダウンロード)]
 mkdir -p git
 cd git
-git clone https://github.com/tsukashusan/handson-enviroment.git -b 1.0.0 --depth 1
+git clone https://github.com/tsukashusan/handson-enviroment.git --depth 1
 
 [エディタの起動 (code .) ]
 code .

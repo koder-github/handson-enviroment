@@ -88,6 +88,38 @@ variable "synapspoolname" {
   default = "hanbankanri"
 }
 
+#name can contain only letters, numbers or underscore, The value must be between 1 and 15 characters long
+variable "sparkpoolname" {
+  type    = string
+  default = "sparkpool1"
+}
+
+variable "sparkpool_node_size_family" {
+  type    = string
+  default = "MemoryOptimized"
+}
+
+variable "sparkpool_node_size" {
+  type    = string
+  default = "Small"
+}
+
+variable "sparkpool_max_node_count" {
+  type    = string
+  default = "4"
+}
+
+variable "sparkpool_min_node_count" {
+  type    = string
+  default = "3"
+}
+
+variable "sparkpool_delay_in_minutes" {
+  type    = string
+  default = "15"
+}
+
+
 variable "synapseuser" {
   type    = string
   default = "adminuser"
@@ -138,7 +170,6 @@ variable "client_userid" {
   type    = string
   default = "<client_user_id>"
 }
-
 
 variable "key_vault_ipaddress"{
   type    = list(string)

@@ -5,7 +5,7 @@ variable "region" {
 
 variable "resourcegroupname" {
   type = string
-  default = "<ResourceGroup>"
+  default = "azstudy"
 }
 
 variable "networkaddress" {
@@ -79,7 +79,7 @@ variable "imageversion" {
 
 variable "synapseworkspacename" {
   type    = string
-  default = "<prefix>synapsews"
+  default = "synapsews"
 }
 
 #name can contain only letters, numbers or underscore, The value must be between 1 and 15 characters long
@@ -98,12 +98,6 @@ variable "synapsepassword" {
   default = "<password>"
 }
 
-variable "storageaccountname" {
-  type    = string
-  default = "<prefix>synapse"
-}
-
-
 variable "storagecontainer" {
   type    = string
   default = "synapse"
@@ -116,13 +110,13 @@ variable "csvstoragecontainer" {
 
 variable "databricksname" {
   type    = string
-  default = "<prefix>databricks"
+  default = "databricks"
 }
 
 
 variable "datalake2accountname" {
   type    = string
-  default = "<prefix>dl2"
+  default = "dl2"
 }
 
 variable "datalakege2name" {
@@ -130,10 +124,9 @@ variable "datalakege2name" {
   default = "dl2"
 }
 
-
 variable "key_vaultname" {
   type    = string
-  default = "<prefix>keyvault"
+  default = "keyvault"
 }
 
 variable "key_vault_retention" {
@@ -146,15 +139,6 @@ variable "client_userid" {
   default = "<client_user_id>"
 }
 
-variable "client_objectid" {
-  type    = string
-  default = "<object_id>"
-}
-
-variable "client_tenantid" {
-  type    = string
-  default = "<client_tenantid>"
-}
 
 variable "key_vault_ipaddress"{
   type    = list(string)
@@ -168,5 +152,5 @@ variable "install4chocolatey" {
 
 variable "bastion_name" {
   type    = string
-  default = "<prefix>bastion"
+  default = "bastion"
 }

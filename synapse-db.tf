@@ -1,5 +1,5 @@
-resource "azurerm_storage_account" "example" {
-  name                     = var.storageaccountname
+resource "azurerm_storage_account" "datalake" {
+  name                     = format("%s%s", var.datalake2accountname, random_string.random.result)
   resource_group_name      = azurerm_resource_group.example.name
   location                 = azurerm_resource_group.example.location
   account_tier             = "Standard"
@@ -13,38 +13,43 @@ resource "azurerm_storage_account" "example" {
   }
 }
 
-resource "azurerm_storage_container" "example" {
-  name                  = var.storagecontainer
-  storage_account_name  = azurerm_storage_account.example.name
-  container_access_type = "private"
+resource "azurerm_role_assignment" "user" {
+  scope                = azurerm_storage_account.datalake.id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = data.azurerm_client_config.current.object_id
 }
 
-resource "azurerm_storage_container" "storage" {
-  name                  = var.csvstoragecontainer
-  storage_account_name  = azurerm_storage_account.example.name
-  container_access_type = "private"
+resource "azurerm_storage_data_lake_gen2_filesystem" "example" {
+  name               = "dl2sample"
+  storage_account_id = azurerm_storage_account.datalake.id
+  depends_on = [azurerm_role_assignment.user]
 }
-
 
 resource "azurerm_synapse_workspace" "example" {
-  name                                 = var.synapseworkspacename
+  name                                 = format("%s%s", var.synapseworkspacename, random_string.random.result)
   resource_group_name                  = azurerm_resource_group.example.name
   location                             = azurerm_resource_group.example.location
-  storage_data_lake_gen2_filesystem_id = format("https://%s.dfs.core.windows.net/%s", azurerm_storage_account.datalake.name, var.datalakege2name)
+  storage_data_lake_gen2_filesystem_id = format("https://%s.dfs.core.windows.net/%s", azurerm_storage_account.datalake.name, azurerm_storage_data_lake_gen2_filesystem.example.name)
   sql_administrator_login              = var.synapseuser
   sql_administrator_login_password     = var.synapsepassword
 
   aad_admin {
     login     = var.client_userid
-    object_id = var.client_objectid
-    tenant_id = var.client_tenantid
+    object_id = data.azurerm_client_config.current.object_id
+    tenant_id = data.azurerm_client_config.current.tenant_id
   }
 
   tags = {
       environment = "Bastion & Terraform Demo"
       learning = "AzureStudy"
   }
-  depends_on = [null_resource.create_datalake_gen2]
+  depends_on = [azurerm_storage_data_lake_gen2_filesystem.example]
+}
+
+resource "azurerm_role_assignment" "synapseworkspace" {
+  scope              = azurerm_storage_account.datalake.id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id       = azurerm_synapse_workspace.example.identity[0].principal_id
 }
 
 resource "azurerm_synapse_sql_pool" "example" {
@@ -53,16 +58,16 @@ resource "azurerm_synapse_sql_pool" "example" {
   sku_name             = "DW100c"
   create_mode          = "Default"
   collation            = "Japanese_CS_AS_KS_WS"
-  provisioner "local-exec" {
-    working_dir = "./"
-    command     = "az synapse sql pool pause --name $env:POOL_NAME --workspace-name $env:WORKSPACE_NAME --resource-group $env:RESOURCE_GROUP_NAME"
-    interpreter = ["powershell", "-Command"]
-    environment = {
-      POOL_NAME           = var.synapspoolname
-      WORKSPACE_NAME      = azurerm_synapse_workspace.example.name
-      RESOURCE_GROUP_NAME = azurerm_resource_group.example.name
-    }
-  }
+  #provisioner "local-exec" {
+  #  working_dir = "./"
+  #  command     = "az synapse sql pool pause --name $env:POOL_NAME --workspace-name $env:WORKSPACE_NAME --resource-group $env:RESOURCE_GROUP_NAME"
+  #  interpreter = ["powershell", "-Command"]
+  #  environment = {
+  #    POOL_NAME           = var.synapspoolname
+  #    WORKSPACE_NAME      = azurerm_synapse_workspace.example.name
+  #    RESOURCE_GROUP_NAME = azurerm_resource_group.example.name
+  #  }
+  #}
 }
 
 resource "azurerm_synapse_firewall_rule" "azure" {
@@ -80,7 +85,7 @@ resource "azurerm_synapse_firewall_rule" "client" {
 }
 
 resource "azurerm_databricks_workspace" "example" {
-  name                = var.databricksname
+  name                = format("%s%s", var.databricksname, random_string.random.result)
   resource_group_name = azurerm_resource_group.example.name
   location            = azurerm_resource_group.example.location
   sku                 = "trial"

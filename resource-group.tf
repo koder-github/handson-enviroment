@@ -4,9 +4,19 @@ provider "azurerm" {
     features {}
 }
 
+data "azurerm_subscription" "primary" {}
+
 data "azurerm_client_config" "current" {}
+
+resource "random_string" "random" {
+  length           = 6
+  number           = true
+  upper            = false
+  lower            = true
+  special          = false
+}
 
 resource "azurerm_resource_group" "example" {
     location = var.region
-    name     = var.resourcegroupname
+    name     = format("%s-%s", var.resourcegroupname, random_string.random.result)
 }

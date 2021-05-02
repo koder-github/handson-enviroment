@@ -85,7 +85,7 @@ variable "synapseworkspacename" {
 #name can contain only letters, numbers or underscore, The value must be between 1 and 15 characters long
 variable "synapspoolname" {
   type    = string
-  default = "hanbankanri"
+  default = "hanbaikanri"
 }
 
 #name can contain only letters, numbers or underscore, The value must be between 1 and 15 characters long
@@ -171,9 +171,14 @@ variable "client_userid" {
   default = "<client_user_id>"
 }
 
+variable "client_objectid" {
+  type    = string
+  default = "<client_object_id>"
+}
+
 variable "key_vault_ipaddress"{
   type    = list(string)
-  default = ["<ipaddress>/32"]
+  default = ["<ipaddress>/32", "<cloudshellipaddress>"]
 }
 
 variable "install4chocolatey" {
@@ -184,4 +189,9 @@ variable "install4chocolatey" {
 variable "bastion_name" {
   type    = string
   default = "bastion"
+}
+
+variable "interpreter" {
+  type    = list(string)
+  default = ["pwsh", "-Command"]
 }

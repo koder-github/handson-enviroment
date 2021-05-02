@@ -16,11 +16,11 @@ resource "azurerm_storage_account" "datalake" {
 resource "azurerm_role_assignment" "user" {
   scope                = azurerm_storage_account.datalake.id
   role_definition_name = "Storage Blob Data Contributor"
-  principal_id         = data.azurerm_client_config.current.object_id
+  principal_id         = var.client_objectid
   provisioner "local-exec" {
     working_dir = "./"
     command     = "Start-Sleep -Seconds 10"
-    interpreter = ["powershell", "-Command"]
+    interpreter = var.interpreter
   }
 }
 
@@ -46,7 +46,7 @@ resource "azurerm_synapse_workspace" "example" {
 
   aad_admin {
     login     = var.client_userid
-    object_id = data.azurerm_client_config.current.object_id
+    object_id = var.client_objectid
     tenant_id = data.azurerm_client_config.current.tenant_id
   }
 
@@ -78,7 +78,7 @@ resource "azurerm_synapse_sql_pool" "example" {
   #provisioner "local-exec" {
   #  working_dir = "./"
   #  command     = "az synapse sql pool pause --name $env:POOL_NAME --workspace-name $env:WORKSPACE_NAME --resource-group $env:RESOURCE_GROUP_NAME"
-  #  interpreter = ["powershell", "-Command"]
+  #  interpreter = var.interpreter
   #  environment = {
   #    POOL_NAME           = var.synapspoolname
   #    WORKSPACE_NAME      = azurerm_synapse_workspace.example.name

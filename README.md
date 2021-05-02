@@ -11,4 +11,3 @@
 1. terraform init
 1. terraform plan -out create-synapsae.plan
 1. terraform apply "create-synapsae.plan"
-

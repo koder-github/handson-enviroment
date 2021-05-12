@@ -191,7 +191,27 @@ variable "bastion_name" {
   default = "bastion"
 }
 
-variable "interpreter" {
+variable "env" {
+  type    = string
+  default = "pwsh"
+}
+
+variable "interpreter_pwsh" {
   type    = list(string)
   default = ["pwsh", "-Command"]
+}
+
+variable "interpreter_bash" {
+  type    = list(string)
+  default = []
+}
+
+variable "command_pwsh" {
+  type    = string
+  default = "Start-Sleep -Seconds 10"
+}
+
+variable "command_bash" {
+  type    = string
+  default = "sleep 10s"
 }

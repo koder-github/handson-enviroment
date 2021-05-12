@@ -19,8 +19,8 @@ resource "azurerm_role_assignment" "user" {
   principal_id         = var.client_objectid
   provisioner "local-exec" {
     working_dir = "./"
-    command     = "Start-Sleep -Seconds 10"
-    interpreter = var.interpreter
+    command     = var.env == "pwsh" ? var.command_pwsh : var.command_bash
+    interpreter = var.env == "pwsh" ? var.interpreter_pwsh : var.interpreter_bash
   }
 }
 

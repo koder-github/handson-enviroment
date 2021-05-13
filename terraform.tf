@@ -1,5 +1,5 @@
 terraform {
   required_providers {
-    azurerm = "=2.57.0"
+    azurerm = "=2.58.0"
   }
 }
